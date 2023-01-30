@@ -34,6 +34,12 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name"]
 
+    def save(self, *args, **kwargs) -> None:
+        is_new = True if not self.pk else False
+        if is_new:
+            self.username = self.email
+        return super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = _('User')
         verbose_name_plural = _('Users')
