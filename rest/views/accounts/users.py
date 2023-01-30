@@ -61,6 +61,11 @@ class UserViewSet(
             self.permission_classes = [AllowAny]
         return super().get_permissions()
 
+    def destroy(self, request, *args, **kwargs):
+        user = self.get_object()
+        soft_delete_user(user)
+        return super().retrieve(request, *args, **kwargs)
+
     @swagger_auto_schema(
         operation_id='Authorization',
         operation_description='Get authorization token for application',
